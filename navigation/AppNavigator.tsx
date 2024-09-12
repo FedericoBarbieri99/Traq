@@ -13,7 +13,11 @@ const AppNavigator = () => {
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="Home">
 				<Stack.Screen name="Home" component={HomeScreen} />
-				<Stack.Screen name="Scanner" component={ScannerPage} />
+				<Stack.Screen
+					name="Scanner"
+					options={{ headerShown: false }}
+					component={ScannerPage}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

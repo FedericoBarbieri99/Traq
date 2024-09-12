@@ -27,7 +27,7 @@ export default function QRScanner() {
 	}
 
 	return (
-		<View className="h-full w-full">
+		<View className={"absolute grow top-0 bottom-0 h-full w-full"}>
 			<CameraView
 				className="h-full w-full"
 				facing={"back"}
