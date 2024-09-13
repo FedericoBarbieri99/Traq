@@ -28,6 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>com.federicobarbieri.tunez</string>
+          <string>tunez</string>
         </array>
       </dict>
     </array>

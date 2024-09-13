@@ -1,8 +1,7 @@
 import React from "react";
 import { Button, View } from "react-native";
-import QRScanner from "../components/QrScanner";
-import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import QRScanner from "../components/QrScanner";
 
 const ScannerPage = ({ navigation }: { navigation: any }) => {
 	/*const onSuccess = (result: IDetectedBarcode[]) => {
@@ -14,7 +13,7 @@ const ScannerPage = ({ navigation }: { navigation: any }) => {
 			<SafeAreaView className="z-50">
 				<Button title="X" onPress={() => {navigation.navigate("Home")}} />
 			</SafeAreaView>
-			<QRScanner className="absolute grow top-0 bottom-0 h-full w-full"/>
+			<QRScanner />
 		</View>
 	);
 };
