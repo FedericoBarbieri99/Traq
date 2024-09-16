@@ -4,8 +4,8 @@ import {
 	useCameraPermissions,
 } from "expo-camera";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import ScannerOverlay from "./ScanenrOverlay";
+import { Button, Text, View } from "react-native";
+import ScannerOverlay from "./ScannerOverlay";
 
 export default function QRScanner() {
 	const [scan, setScan] = useState<string>("");

@@ -1,41 +1,79 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { Linking } from "react-native";
-import { Button, Text, View } from "react-native";
+import { Button, Linking, Text, View } from "react-native";
+import { useAuthStore } from "../stores/AuthStore";
 
 const Home = ({ navigation }: { navigation: any }) => {
-	const spotifyAuthUrl = `https://accounts.spotify.com/authorize?client_id=${process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=exp://192.168.1.17:8081&scope=user-read-private%20user-read-email`;
+	var spotifyAuthUrl = "https://accounts.spotify.com/authorize";
+	spotifyAuthUrl += "?response_type=token";
+	spotifyAuthUrl +=
+		"&client_id=" +
+		encodeURIComponent(process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "");
+	spotifyAuthUrl +=
+		"&scope=" +
+		encodeURIComponent(
+			"user-read-private user-read-email user-modify-playback-state user-read-playback-state"
+		);
+	spotifyAuthUrl +=
+		"&redirect_uri=" + encodeURIComponent("exp://192.168.1.17:8081");
+	spotifyAuthUrl += "&show_dialog=" + encodeURIComponent(true);
+
+	const token = useAuthStore((state) => state.token);
 
 	const connectToSpotify = () => {
 		Linking.openURL(spotifyAuthUrl);
 	};
 
-	const handleRedirect = (event: { url: any }) => {
-		const { url } = event;
+	const playTrack = async (token: string, trackUri: string) => {
+		const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
+			method: "PUT",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				uris: [trackUri], // Ad esempio, 'spotify:track:TRACK_ID'
+			}),
+		});
 
-		// Estrai l'access token dall'URL di redirect
-		const token = url.match(/access_token=([^&]*)/)[1];
-
-		console.log("Access Token:", token);
-		// Usa il token per fare richieste all'API di Spotify
+		if (response.status === 204) {
+			console.log("Traccia in riproduzione!");
+		} else {
+			console.log(response);
+			console.error("Errore nella riproduzione della traccia");
+		}
 	};
 
-	useEffect(() => {
-		// Ascolta l'evento di deep linking
-		const subscription = Linking.addEventListener("url", handleRedirect);
+	const playSpotifyTrack = async () => {
+		const trackUri = "spotify:track:7sj9VfVtmcEZBDbRAsVXWY?si=14aecd2dc13048d7"; // Sostituisci con l'URI della traccia che vuoi riprodurre
+		if (!token) return;
+		try {
+			await playTrack(token, trackUri);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
-		return () => {
-			// Pulisci l'ascoltatore
-			subscription.remove();
-		};
-	}, []);
 	return (
 		<View className="flex-1 items-center justify-center bg-white">
 			<StatusBar style="auto" />
 			<Text>App di AAAA</Text>
 
-			<Button title="Dai" onPress={() => navigation.navigate("Scanner")} />
-			<Button title="Collega dai" onPress={connectToSpotify} />
+			{token != null ? (
+				<>
+					<Button title="Scan" onPress={() => navigation.navigate("Scanner")} />
+					<Button
+						title="Device"
+						onPress={async () => {
+							await playSpotifyTrack();
+						}}
+					/>
+				</>
+			) : (
+				<>
+					<Button title="Collega dai" onPress={connectToSpotify} />
+				</>
+			)}
 		</View>
 	);
 };
