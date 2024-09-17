@@ -70,7 +70,7 @@ const PlayPage = ({ navigation }: { navigation: any }) => {
 			<TouchableOpacity
 				className="bg-freshBlue text-white px-6 py-3 rounded-full mt-4 shadow-lg"
 				onPress={async () => {
-					//await playTrack(`3n3Ppam7vgaVa1iaRUc9Lp`);
+					await playTrack(`3n3Ppam7vgaVa1iaRUc9Lp`);
 				}}
 			>
 				<Text className="text-white text-lg font-semibold">Play</Text>

@@ -7,19 +7,17 @@ const Home = ({ navigation }: { navigation: any }) => {
 	const setToken = useAuthStore((state) => state.setToken);
 	const token = useAuthStore((state) => state.token);
 
-	var spotifyAuthUrl = "https://accounts.spotify.com/authorize";
-	spotifyAuthUrl += "?response_type=token";
-	spotifyAuthUrl +=
-		"&client_id=" +
-		encodeURIComponent(process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "");
-	spotifyAuthUrl +=
-		"&scope=" +
-		encodeURIComponent(
-			"user-read-private user-read-email user-modify-playback-state user-read-playback-state"
-		);
-	spotifyAuthUrl +=
-		"&redirect_uri=" + encodeURIComponent("exp://192.168.68.129:8081");
-	spotifyAuthUrl += "&show_dialog=" + encodeURIComponent(true);
+	const baseUrl = "https://accounts.spotify.com/authorize";
+	const params = new URLSearchParams({
+		response_type: "token",
+		client_id: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "",
+		scope:
+			"user-read-private user-read-email user-modify-playback-state user-read-playback-state",
+		redirect_uri: "exp://192.168.68.129:8081",
+		show_dialog: "true",
+	});
+
+	const spotifyAuthUrl = `${baseUrl}?${params.toString()}`;
 
 	const connectToSpotify = () => {
 		Linking.canOpenURL(spotifyAuthUrl)
