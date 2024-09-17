@@ -3,6 +3,8 @@ import AppNavigator from "./navigation/AppNavigator";
 import { registerRootComponent } from "expo";
 import { useAuthStore } from "./stores/AuthStore";
 import { Linking } from "react-native";
+import { RootSiblingParent } from "react-native-root-siblings";
+import Toast from "react-native-root-toast";
 
 const App = () => {
 	const setToken = useAuthStore((state) => state.setToken);
@@ -18,6 +20,9 @@ const App = () => {
 			// Salva il token nello stato usando Zustand
 			setToken(token);
 			console.log("Access Token salvato:", token);
+			Toast.show("Access Token salvato!", {
+				duration: Toast.durations.LONG,
+			});
 		}
 	};
 
@@ -30,7 +35,11 @@ const App = () => {
 			subscription.remove();
 		};
 	}, []);
-	return <AppNavigator />;
+	return (
+		<RootSiblingParent>
+			<AppNavigator />
+		</RootSiblingParent>
+	);
 };
 
 export default App;
