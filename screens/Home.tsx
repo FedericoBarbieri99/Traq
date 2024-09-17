@@ -1,9 +1,12 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Button, Linking, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { Linking, Text, TouchableOpacity, View } from "react-native";
+import Toast from "react-native-root-toast";
 import { useAuthStore } from "../stores/AuthStore";
 
 const Home = ({ navigation }: { navigation: any }) => {
+	const setToken = useAuthStore((state) => state.setToken);
+	const token = useAuthStore((state) => state.token);
+
 	var spotifyAuthUrl = "https://accounts.spotify.com/authorize";
 	spotifyAuthUrl += "?response_type=token";
 	spotifyAuthUrl +=
@@ -17,8 +20,6 @@ const Home = ({ navigation }: { navigation: any }) => {
 	spotifyAuthUrl +=
 		"&redirect_uri=" + encodeURIComponent("exp://192.168.68.129:8081");
 	spotifyAuthUrl += "&show_dialog=" + encodeURIComponent(true);
-
-	const token = useAuthStore((state) => state.token);
 
 	const connectToSpotify = () => {
 		Linking.canOpenURL(spotifyAuthUrl)
@@ -34,73 +35,55 @@ const Home = ({ navigation }: { navigation: any }) => {
 			.catch((err) => console.error("Error checking Spotify app:", err));
 		//Linking.openURL(spotifyAuthUrl);
 	};
-	var deviceId = "0ef2d0b318d051273851f8aedd6cb33254be9782";
 
-	const playTrack = async (trackUri: string) => {
-		const response = await fetch(
-			`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-			{
-				method: "PUT",
-				headers: {
-					Authorization: `Bearer ${token}`,
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					uris: ["spotify:track:7sj9VfVtmcEZBDbRAsVXWY"], // Ad esempio, 'spotify:track:TRACK_ID'
-					position_ms: 56000,
-				}),
-			}
-		);
+	const handleRedirect = (event: { url: string }) => {
+		const { url } = event;
 
-		if (response.status === 204) {
-			console.log("Traccia in riproduzione!");
-		} else {
-			console.table(response);
+		// Estrai il token dall'URL di redirect (es. da tunez://callback#access_token=YOUR_TOKEN)
+		const tokenMatch = url.match(/access_token=([^&]*)/);
+		const token = tokenMatch ? tokenMatch[1] : null;
+
+		if (token) {
+			// Salva il token nello stato usando Zustand
+			setToken(token);
+			console.log("Access Token salvato:", token);
+			Toast.show("Access Token salvato!", {
+				duration: Toast.durations.LONG,
+			});
+			navigation.navigate("PlayPage");
 		}
 	};
 
-	// Esempio per aprire una traccia
-	const getDevices = async () => {
-		const response = await fetch(
-			`https://api.spotify.com/v1/me/player/devices`,
-			{
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		);
+	useEffect(() => {
+		// Ascolta l'evento di deep linking
+		const subscription = Linking.addEventListener("url", handleRedirect);
 
-		const data = await response.json();
-		console.log("Dispositivi disponibili:", data);
-	};
+		return () => {
+			// Pulisci l'ascoltatore
+			subscription.remove();
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!token) navigation.navigate("Home");
+	});
 
 	return (
-		<View className="flex-1 items-center justify-center bg-gradient-to-tr from-indigo-500  to-emerald-500 to-90%">
-			<StatusBar style="auto" />
-			<Text>App di AAAA</Text>
+		<View className="bg-bg-main flex-1 justify-center items-center p-6">
+			<Text className="text-text-main text-3xl font-extrabold mb-8 tracking-wider shadow-lg">
+				Benvenuto su Tunez
+			</Text>
 
-			{token != null ? (
-				<>
-					<Button title="Scan" onPress={() => navigation.navigate("Scanner")} />
-					<Button
-						title="Device"
-						onPress={async () => {
-							await getDevices();
-						}}
-					/>
-					<Button
-						title="Play"
-						onPress={async () => {
-							//await playTrack(`3n3Ppam7vgaVa1iaRUc9Lp`);
-						}}
-					/>
-				</>
-			) : (
-				<>
-					<Button title="Collega dai" onPress={connectToSpotify} />
-				</>
-			)}
+			<View className="flex-row space-x-4">
+				<TouchableOpacity
+					className="bg-accent-primary px-8 py-4 rounded-full mt-4 shadow-lg transition-transform transform hover:scale-105"
+					onPress={connectToSpotify}
+				>
+					<Text className="text-white text-lg font-semibold tracking-wide">
+						Collegati a Spotify
+					</Text>
+				</TouchableOpacity>
+			</View>
 		</View>
 	);
 };

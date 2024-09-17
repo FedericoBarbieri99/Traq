@@ -11,7 +11,12 @@ const ScannerPage = ({ navigation }: { navigation: any }) => {
 	return (
 		<View className=" grow bg-cyan-200 relative">
 			<SafeAreaView className="z-50">
-				<Button title="X" onPress={() => {navigation.navigate("Home")}} />
+				<Button
+					title="X"
+					onPress={() => {
+						navigation.navigate("PlayPage");
+					}}
+				/>
 			</SafeAreaView>
 			<QRScanner />
 		</View>

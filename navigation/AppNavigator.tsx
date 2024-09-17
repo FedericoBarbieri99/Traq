@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import HomeScreen from "../screens/Home";
 import ScannerPage from "../screens/ScannerPage";
+import PlayPage from "../screens/PlayPage";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,11 @@ const AppNavigator = () => {
 					name="Scanner"
 					options={{ headerShown: false }}
 					component={ScannerPage}
+				/>
+				<Stack.Screen
+					name="PlayPage"
+					options={{ headerShown: false }}
+					component={PlayPage}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>
