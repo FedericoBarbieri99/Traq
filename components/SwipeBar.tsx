@@ -98,12 +98,11 @@ const SwipeBar = ({ onSwipe }: { onSwipe: () => void }) => {
 			{/* Sfondo con gradiente animato */}
 			<AnimatedLinearGradient
 				colors={[gradientColors, gradientColors]} // Usa il gradiente animato
-                start={{ x: 0.5, y: 0.5 }}
+				start={{ x: 0.5, y: 0.5 }}
 				end={{ x: 1, y: 1 }}
 				className={"absolute top-0 bottom-0 right-0 left-0 rounded-md"}
-				//style={{ ...StyleSheet.absoluteFillObject, borderRadius: 8 }} // Stile per riempire il componente
 			/>
-			<Text className="text-main text-lg font-light">
+			<Text className="text text-lg font-light">
 				Fai swipe per scansionare
 			</Text>
 

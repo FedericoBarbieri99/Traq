@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Linking, Text, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-root-toast";
 import { useAuthStore } from "../stores/AuthStore";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 
 const Home = ({ navigation }: { navigation: any }) => {
 	const setToken = useAuthStore((state) => state.setToken);
@@ -48,7 +49,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 			Toast.show("Access Token salvato!", {
 				duration: Toast.durations.LONG,
 			});
-			navigation.navigate("PlayPage");
+			navigation.navigate("Onboarding");
 		}
 	};
 
@@ -68,20 +69,19 @@ const Home = ({ navigation }: { navigation: any }) => {
 
 	return (
 		<View className="bg-main flex-1 justify-center items-center p-6">
-			<Text className="text-text-main text-3xl font-extrabold mb-8 tracking-wider shadow-lg">
+			<Text className="text-text text-3xl font-extrabold mb-8 tracking-wider shadow-lg">
 				Benvenuto su Tunez
 			</Text>
 
-			<View className="flex-row space-x-4">
-				<TouchableOpacity
-					className="bg-accent-primary px-8 py-4 rounded-full mt-4 shadow-lg transition-transform transform hover:scale-105"
-					onPress={connectToSpotify}
-				>
-					<Text className="text-white text-lg font-semibold tracking-wide">
-						Collegati a Spotify
-					</Text>
-				</TouchableOpacity>
-			</View>
+			<TouchableOpacity
+				className="bg-accent-primary px-8 py-4 rounded-full my-4 shadow-lg flex flex-row items-center"
+				onPress={connectToSpotify}
+			>
+				<Text className="text-white text-lg font-semibold tracking-wide mr-2">
+					Collegati a Spotify
+				</Text>
+				<SimpleLineIcons name="social-spotify" size={24} color="#FFFFFF" />
+			</TouchableOpacity>
 		</View>
 	);
 };

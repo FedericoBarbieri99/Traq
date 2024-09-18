@@ -106,7 +106,7 @@ const PlayPage = ({ navigation }: { navigation: any }) => {
 
 				{/* Sezione per rilevare lo swipe */}
 				<View className="flex w-full items-center gap-2">
-					<SwipeBar onSwipe={() => {}} />
+					<SwipeBar onSwipe={() => navigation.navigate("Scanner")} />
 					
 				</View>
 			</View>
