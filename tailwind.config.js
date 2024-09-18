@@ -7,8 +7,8 @@ export const content = [
 export const theme = {
 	extend: {
 		colors: {
-			"bg-main": "#0D0D0D", // Dark neon background
-			"bg-card": "#1A1A1A", // Slightly lighter for cards or sections
+			"main": "#0D0D0D", // Dark neon background
+			"card": "#1A1A1A", // Slightly lighter for cards or sections
 			"text-main": "#FFFFFF", // Bright white text for contrast
 			"accent-primary": "#FF007A", // Neon pink for primary accents (buttons, highlights)
 			"accent-secondary": "#00FFE0", // Neon cyan for secondary elements

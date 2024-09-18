@@ -17,7 +17,7 @@ const ScannerPage = ({ navigation }: { navigation: any }) => {
 					<SimpleLineIcons name="close" size={24} color="#FF007A" />
 				</TouchableOpacity>
 			</SafeAreaView>
-			<SafeAreaView className="z-10 px-4 flex w-full grow-0 shrink opacity-40 bg-bg-main absolute"></SafeAreaView>
+			<SafeAreaView className="z-10 px-4 flex w-full grow-0 shrink opacity-40 bg-main absolute"></SafeAreaView>
 
 			<QRScanner />
 		</View>

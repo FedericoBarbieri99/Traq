@@ -88,7 +88,7 @@ const PlayPauseButton = ({ onPress }: { onPress: () => void }) => {
 
 			{/* Pulsante Play/Pause */}
 			<TouchableOpacity
-				className="bg-bg-card w-48 h-48 rounded-full flex justify-center items-center"
+				className="bg-card w-48 h-48 rounded-full flex justify-center items-center"
 				onPress={onPress}
 			>
 				<SimpleLineIcons name="control-pause" size={72} color="#FF007A" />

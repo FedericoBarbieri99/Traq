@@ -1,13 +1,13 @@
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import React, { useRef } from "react";
+import React from "react";
 import {
-	PanResponder,
 	SafeAreaView,
 	Text,
 	TouchableOpacity,
-	View,
+	View
 } from "react-native";
 import PlayPauseButton from "../components/PlayPauseButton";
+import SwipeBar from "../components/SwipeBar";
 import { useAuthStore } from "../stores/AuthStore";
 
 const PlayPage = ({ navigation }: { navigation: any }) => {
@@ -70,23 +70,8 @@ const PlayPage = ({ navigation }: { navigation: any }) => {
 		console.log("Dispositivi disponibili:", data);
 	};
 
-	const panResponder = useRef(
-		PanResponder.create({
-			onStartShouldSetPanResponder: () => true,
-			onMoveShouldSetPanResponder: () => true,
-			onPanResponderRelease: (evt, gestureState) => {
-				const { dx, dy } = gestureState;
-				if (Math.abs(dx) > 50 || Math.abs(dy) > 50) {
-					// Rilevato lo swipe, naviga alla pagina scan
-
-					navigation.navigate("Scanner");
-				}
-			},
-		})
-	).current;
-
 	return (
-		<SafeAreaView className="bg-bg-main ">
+		<SafeAreaView className="bg-main ">
 			<View className="h-full w-full p-4 flex grow flex-col justify-between items-center">
 				{/* Pulsanti secondari */}
 				<View className="flex-row justify-between w-full">
@@ -115,35 +100,14 @@ const PlayPage = ({ navigation }: { navigation: any }) => {
 						<Text className="text-accent-primary">Device</Text>
 					</TouchableOpacity>
 				</View>
+
+				{/* Sezione per il Play/Pause */}
 				<PlayPauseButton onPress={() => {}} />
-				{/* Sezione per il Play/Pause con animazione delle onde 
-				<View className="justify-center items-center">
-					<TouchableOpacity
-						className="border border-accent-primary w-64 h-64 rounded-full flex justify-center items-center"
-						onPress={async () => {
-							await playTrack(`3n3Ppam7vgaVa1iaRUc9Lp`);
-						}}
-					>
-						<View className="hidden">
-							<SimpleLineIcons name="control-play" size={72} color="#FF007A" />
-						</View>
-						<View className="">
-							<SimpleLineIcons name="control-pause" size={72} color="#FF007A" />
-						</View>
-					</TouchableOpacity>
-				</View>*/}
 
 				{/* Sezione per rilevare lo swipe */}
 				<View className="flex w-full items-center gap-2">
-					<View
-						className="w-full h-12 justify-center items-center bg-bg-card rounded-lg"
-						{...panResponder.panHandlers}
-					>
-						<Text className="text-2xl font-bold text-accent-glow">SWIPE</Text>
-					</View>
-					<Text className="text-accent-secondary text-lg font-light">
-						Fai swipe per scansionare
-					</Text>
+					<SwipeBar onSwipe={() => {}} />
+					
 				</View>
 			</View>
 		</SafeAreaView>

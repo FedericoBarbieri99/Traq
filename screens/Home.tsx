@@ -67,7 +67,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 	});
 
 	return (
-		<View className="bg-bg-main flex-1 justify-center items-center p-6">
+		<View className="bg-main flex-1 justify-center items-center p-6">
 			<Text className="text-text-main text-3xl font-extrabold mb-8 tracking-wider shadow-lg">
 				Benvenuto su Tunez
 			</Text>
