@@ -13,7 +13,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 		client_id: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "",
 		scope:
 			"user-read-private user-read-email user-modify-playback-state user-read-playback-state",
-		redirect_uri: "exp://192.168.68.129:8081",
+		redirect_uri: "exp://192.168.68.123:8081",
 		show_dialog: "true",
 	});
 
