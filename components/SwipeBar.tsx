@@ -102,7 +102,7 @@ const SwipeBar = ({ onSwipe }: { onSwipe: () => void }) => {
 				end={{ x: 1, y: 1 }}
 				className={"absolute top-0 bottom-0 right-0 left-0 rounded-md"}
 			/>
-			<Text className="text text-lg font-light">
+			<Text className="text-main text-lg font-light">
 				Fai swipe per scansionare
 			</Text>
 

@@ -16,7 +16,7 @@ import { useDeviceStore } from "../stores/DeviceStore";
 import { useSpotifyApi } from "../hook/SpotifyHook";
 
 const Onboarding = ({ navigation }: { navigation: any }) => {
-	const { fetchUserDevices } = useSpotifyApi();
+	const { fetchUserDevices, openSpotifyAndActivate } = useSpotifyApi();
 
 	const setActiveDevice = useDeviceStore((state) => state.setActiveDevice);
 	const devices = useDeviceStore((state) => state.devices);
@@ -112,9 +112,7 @@ const Onboarding = ({ navigation }: { navigation: any }) => {
 			</TouchableOpacity>
 			<TouchableOpacity
 				className="bg-card px-8 py-4 rounded-full mt-auto shadow-lg flex flex-row items-center"
-				onPress={() => {
-					Linking.openURL("spotify:track:7sj9VfVtmcEZBDbRAsVXWY");
-				}}
+				onPress={openSpotifyAndActivate}
 			>
 				<Text className="text-white text-lg font-semibold tracking-wide mr-2">
 					Apri Spotify

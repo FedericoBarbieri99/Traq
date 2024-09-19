@@ -44,27 +44,31 @@ export const playTrack = async (
 		}
 	);
 
-	if (response.status === 204) {
-		console.log("Traccia in riproduzione!");
-	} else {
-		console.table(response);
-	}
+	if (response.status === 204) true;
+
+	console.error(response);
+	return false;
 };
 
-export const pausePlayback = async (token: string) => {
-	const response = await fetch("https://api.spotify.com/v1/me/player/pause", {
-		method: "PUT",
-		headers: {
-			Authorization: `Bearer ${token}`, // Usa il token ottenuto dopo l'autenticazione
-			"Content-Type": "application/json",
-		},
-	});
+export const pausePlayback = async (token: string, deviceId: string) => {
+	const response = await fetch(
+		`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+		{
+			method: "PUT",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				uris: ["spotify:track:3mkOlbSv5RYadx0JsjTrKq"], // Canzone 10 minuti di silenzio
+			}),
+		}
+	);
 
-	if (response.status === 204) {
-		console.log("Riproduzione messa in pausa!");
-	} else {
-		console.log("Errore nel mettere in pausa:", response);
-	}
+	if (response.status === 204) return true;
+
+	console.log("Errore nel mettere in pausa:", response);
+	return false;
 };
 
 export const connectToSpotify = (clientId: string, redirectUri: string) => {

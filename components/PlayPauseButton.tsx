@@ -1,20 +1,26 @@
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
-import Svg, { Circle } from "react-native-svg";
+import { TouchableOpacity, View } from "react-native";
 import Animated, {
+	Easing,
+	SharedValue,
+	useAnimatedProps,
 	useSharedValue,
+	withDelay,
 	withRepeat,
 	withTiming,
-	Easing,
-	useAnimatedProps,
-	withDelay,
-	SharedValue,
 } from "react-native-reanimated";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import Svg, { Circle } from "react-native-svg";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-const PlayPauseButton = ({ onPress }: { onPress: () => void }) => {
+const PlayPauseButton = ({
+	onPress,
+	isPlaying,
+}: {
+	onPress: () => void;
+	isPlaying: boolean;
+}) => {
 	const numberOfWaves = 8;
 	const progressValues = Array.from({ length: numberOfWaves }, () =>
 		useSharedValue(0)
@@ -62,8 +68,12 @@ const PlayPauseButton = ({ onPress }: { onPress: () => void }) => {
 	};
 
 	React.useEffect(() => {
-		animateWaves();
-	}, []);
+		if (isPlaying) {
+			animateWaves();
+		} else {
+			progressValues.forEach((p) => (p.value = 0));
+		}
+	}, [isPlaying]);
 
 	return (
 		<View className="flex-1 justify-center items-center">
@@ -91,7 +101,13 @@ const PlayPauseButton = ({ onPress }: { onPress: () => void }) => {
 				className="bg-card w-48 h-48 rounded-full flex justify-center items-center"
 				onPress={onPress}
 			>
-				<SimpleLineIcons name="control-pause" size={72} color="#FF007A" />
+				{isPlaying ? (
+					<SimpleLineIcons name="control-pause" size={72} color="#FF007A" />
+				) : (
+					<View className="ml-2">
+						<SimpleLineIcons name="control-play" size={72} color="#FF007A" />
+					</View>
+				)}
 			</TouchableOpacity>
 		</View>
 	);

@@ -4,9 +4,13 @@ import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import PlayPauseButton from "../components/PlayPauseButton";
 import SwipeBar from "../components/SwipeBar";
 import { useAuthStore } from "../stores/AuthStore";
+import { usePlayerStore } from "../stores/PlayerStore";
+import { useSpotifyApi } from "../hook/SpotifyHook";
 
 const PlayPage = ({ navigation }: { navigation: any }) => {
 	const logout = useAuthStore((state) => state.clearToken);
+	const isPlaying = usePlayerStore((state) => state.isPlaying);
+	const { playUserTrack, pauseUserTrack } = useSpotifyApi();
 
 	return (
 		<SafeAreaView className="bg-main ">
@@ -26,7 +30,13 @@ const PlayPage = ({ navigation }: { navigation: any }) => {
 				</View>
 
 				{/* Sezione per il Play/Pause */}
-				<PlayPauseButton onPress={() => {}} />
+				<PlayPauseButton
+					onPress={() => {
+						if (isPlaying) return pauseUserTrack();
+						return playUserTrack();
+					}}
+					isPlaying={isPlaying}
+				/>
 
 				{/* Sezione per rilevare lo swipe */}
 				<View className="flex w-full items-center gap-2">

@@ -7,10 +7,16 @@ import {
 	connectToSpotify,
 } from "../helpers/SpotifyHelper";
 
+import { usePlayerStore } from "../stores/PlayerStore";
+import { Linking } from "react-native";
+
 export const useSpotifyApi = () => {
 	const token = useAuthStore((state) => state.token);
+	const deviceId = useDeviceStore((state) => state.activeDevice?.id);
+	const trackId = usePlayerStore((state) => state.trackId);
 	const setDevices = useDeviceStore((state) => state.setDevices);
 	const setLoading = useDeviceStore((state) => state.setLoading);
+	const setPlayerState = usePlayerStore((state) => state.setPlayerState);
 
 	const authenticateOnSpotify = () => {
 		connectToSpotify(
@@ -27,22 +33,31 @@ export const useSpotifyApi = () => {
 		}
 	};
 
-	const playUserTrack = (trackUri: string, deviceId: string) => {
-		if (token) {
-			playTrack(token, trackUri, deviceId);
+	const playUserTrack = () => {
+        console.log('play')
+		if (token && deviceId) {
+			playTrack(token, `spotify:track:${trackId}`, deviceId).then((val) =>
+				setPlayerState(val)
+			);
 		}
 	};
 
-	const pauseTrack = () => {
-		if (token) {
-			pausePlayback(token);
+	const pauseUserTrack = () => {
+        console.log('pause')
+		if (token && deviceId) {
+			pausePlayback(token, deviceId).then((val) => setPlayerState(!val));
 		}
+	};
+
+	const openSpotifyAndActivate = () => {
+		Linking.openURL("spotify:track:3mkOlbSv5RYadx0JsjTrKq");
 	};
 
 	return {
 		fetchUserDevices,
 		playUserTrack,
-		pauseTrack,
+		pauseUserTrack,
 		authenticateOnSpotify,
+		openSpotifyAndActivate,
 	};
 };
