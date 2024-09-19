@@ -1,4 +1,5 @@
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useRef } from "react";
 import {
 	Animated,
@@ -11,50 +12,20 @@ import {
 import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DeviceSelector from "../components/DeviceSelector";
-import { useAuthStore } from "../stores/AuthStore";
 import { useDeviceStore } from "../stores/DeviceStore";
-import { useFocusEffect } from "@react-navigation/native";
+import { useSpotifyApi } from "../hook/SpotifyHook";
 
 const Onboarding = ({ navigation }: { navigation: any }) => {
-	const token = useAuthStore((state) => state.token);
+	const { fetchUserDevices } = useSpotifyApi();
 
-	useEffect(() => {
-		if (!token) navigation.navigate("Home");
-	}, [token]);
-
-	const setDevices = useDeviceStore((state) => state.setDevices);
 	const setActiveDevice = useDeviceStore((state) => state.setActiveDevice);
 	const devices = useDeviceStore((state) => state.devices);
 	const activeDevice = useDeviceStore((state) => state.activeDevice);
 	const deviceLoading = useDeviceStore((state) => state.loading);
-	const setLoading = useDeviceStore((state) => state.setLoading);
-
-	const fetchDevices = async () => {
-		setLoading(true);
-		const response = await fetch(
-			"https://api.spotify.com/v1/me/player/devices",
-			{
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${token}`,
-					"Content-Type": "application/json",
-				},
-			}
-		);
-
-		const data = await response.json();
-
-		if (response.ok) {
-			setDevices(data.devices);
-		} else {
-			console.error("Errore nel recuperare i dispositivi:", response);
-		}
-		setLoading(false);
-	};
 
 	useFocusEffect(
 		useCallback(() => {
-			fetchDevices();
+			fetchUserDevices();
 		}, [])
 	);
 
@@ -108,7 +79,7 @@ const Onboarding = ({ navigation }: { navigation: any }) => {
 					className="bg-card p-2 rounded-md mt-4 shadow-lg shrink mx-auto flex flex-row items-center"
 					onPress={async () => {
 						setActiveDevice(null);
-						await fetchDevices();
+						fetchUserDevices();
 					}}
 				>
 					<View className="rotate-45">
@@ -125,7 +96,7 @@ const Onboarding = ({ navigation }: { navigation: any }) => {
 				}`}
 				onPress={() => {
 					if (activeDevice) {
-                        navigation.navigate("PlayPage")
+						navigation.navigate("PlayPage");
 					} else {
 						Toast.show("Seleziona un dispositivo", {
 							position: Toast.positions.TOP,
