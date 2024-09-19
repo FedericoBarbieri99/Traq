@@ -14,7 +14,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 		client_id: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "",
 		scope:
 			"user-read-private user-read-email user-modify-playback-state user-read-playback-state",
-		redirect_uri: "exp://192.168.68.123:8081",
+		redirect_uri: "exp://192.168.68.106:8081",
 		show_dialog: "true",
 	});
 
@@ -32,7 +32,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 				}
 			})
 			.catch((err) => console.error("Error checking Spotify app:", err));
-		//Linking.openURL(spotifyAuthUrl);
+		// Linking.openURL(spotifyAuthUrl);
 	};
 
 	const handleRedirect = (event: { url: string }) => {
@@ -46,9 +46,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 			// Salva il token nello stato usando Zustand
 			setToken(token);
 			console.log("Access Token salvato:", token);
-			Toast.show("Access Token salvato!", {
-				duration: Toast.durations.LONG,
-			});
+
 			navigation.navigate("Onboarding");
 		}
 	};
