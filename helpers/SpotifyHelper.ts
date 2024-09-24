@@ -1,6 +1,5 @@
 import { Linking } from "react-native";
 
-// Sposta l'accesso a Zustand nei componenti o in un custom hook
 export const fetchDevices = async (
 	token: string,
 	setDevices: (devices: any[]) => void,
@@ -25,6 +24,18 @@ export const fetchDevices = async (
 	setLoading(false);
 };
 
+export const fetchSongData = async (url: string) => {
+	const response = await fetch(url, {method: "GET"});
+
+	const data = await response.json();
+
+	if (response.ok) {
+		return data;
+	} else {
+		console.error("Errore nel recuperare i dispositivi:", response);
+	}
+};
+
 export const playTrack = async (
 	token: string,
 	trackUri: string,
@@ -44,7 +55,7 @@ export const playTrack = async (
 		}
 	);
 
-	if (response.status === 204) true;
+	if (response.status === 204) return true;
 
 	console.error(response);
 	return false;

@@ -3,14 +3,21 @@ import {
 	CameraView,
 	useCameraPermissions,
 } from "expo-camera";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import ScannerOverlay from "./ScannerOverlay";
+import { useSpotifyApi } from "../hook/SpotifyHook";
+import Toast from "react-native-root-toast";
 
-export default function QRScanner() {
-	const [scan, setScan] = useState<string>("");
+export default function QRScanner({
+	onScanSuccess,
+}: {
+	onScanSuccess: (trackId: string) => void;
+}) {
 	const [permission, requestPermission] = useCameraPermissions();
-
+	const { fetchTrackData } = useSpotifyApi();
+	const [loading, setLoading] = useState(false);
+	const [prevScan, setPrevScan] = useState<string>();
 	if (!permission) {
 		// Camera permissions are still loading.
 		return <View />;
@@ -26,6 +33,20 @@ export default function QRScanner() {
 		);
 	}
 
+	const onScan = async (res: string) => {
+		if (loading) return;
+		setLoading(true);
+		if (res === prevScan || !res.startsWith("https://pynguino.xyz/api/traq/")) {
+			Toast.show("Qr non valido");
+			return setLoading(false);
+		}
+
+		fetchTrackData(res)
+			.then((id) => onScanSuccess(id))
+			.catch((e) => Toast.show(e));
+		setPrevScan(res);
+	};
+
 	return (
 		<View className={"absolute grow top-0 bottom-0 h-full w-full"}>
 			<CameraView
@@ -35,12 +56,11 @@ export default function QRScanner() {
 					barcodeTypes: ["qr"],
 				}}
 				onBarcodeScanned={(scanningResult: BarcodeScanningResult) =>
-					setScan(scanningResult.data)
+					onScan(scanningResult.data)
 				}
 			>
 				<ScannerOverlay />
 			</CameraView>
-			<Text>{scan}</Text>
 		</View>
 	);
 }

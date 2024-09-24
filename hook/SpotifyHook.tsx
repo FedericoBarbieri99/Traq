@@ -5,6 +5,7 @@ import {
 	playTrack,
 	pausePlayback,
 	connectToSpotify,
+	fetchSongData,
 } from "../helpers/SpotifyHelper";
 
 import { usePlayerStore } from "../stores/PlayerStore";
@@ -21,8 +22,13 @@ export const useSpotifyApi = () => {
 	const authenticateOnSpotify = () => {
 		connectToSpotify(
 			process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "",
-			"exp://192.168.68.106:8081"
+			"exp://192.168.68.121:8081"
 		);
+	};
+
+	const fetchTrackData = async (url: string) => {
+		const data = await fetchSongData(url);
+		return data?.spotifyId;
 	};
 
 	const fetchUserDevices = async () => {
@@ -34,7 +40,7 @@ export const useSpotifyApi = () => {
 	};
 
 	const playUserTrack = () => {
-        console.log('play')
+		console.log("play");
 		if (token && deviceId) {
 			playTrack(token, `spotify:track:${trackId}`, deviceId).then((val) =>
 				setPlayerState(val)
@@ -43,7 +49,7 @@ export const useSpotifyApi = () => {
 	};
 
 	const pauseUserTrack = () => {
-        console.log('pause')
+		console.log("pause");
 		if (token && deviceId) {
 			pausePlayback(token, deviceId).then((val) => setPlayerState(!val));
 		}
@@ -55,6 +61,7 @@ export const useSpotifyApi = () => {
 
 	return {
 		fetchUserDevices,
+		fetchTrackData,
 		playUserTrack,
 		pauseUserTrack,
 		authenticateOnSpotify,
