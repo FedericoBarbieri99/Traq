@@ -18,11 +18,12 @@ export const useSpotifyApi = () => {
 	const setDevices = useDeviceStore((state) => state.setDevices);
 	const setLoading = useDeviceStore((state) => state.setLoading);
 	const setPlayerState = usePlayerStore((state) => state.setPlayerState);
+	const setId = usePlayerStore((state) => state.setTrackId);
 
 	const authenticateOnSpotify = () => {
 		connectToSpotify(
 			process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "",
-			"exp://192.168.68.121:8081"
+			"exp://192.168.68.131:8081"
 		);
 	};
 
@@ -39,13 +40,19 @@ export const useSpotifyApi = () => {
 		}
 	};
 
-	const playUserTrack = () => {
+	const playUserTrack = (id?: string) => {
 		console.log("play");
-		if (token && deviceId) {
-			playTrack(token, `spotify:track:${trackId}`, deviceId).then((val) =>
-				setPlayerState(val)
-			);
+		if (!token || !deviceId) return;
+
+		var playId = trackId;
+		if (id) {
+			setId(id);
+			playId = id;
 		}
+
+		playTrack(token, `spotify:track:${playId}`, deviceId).then((val) =>
+			setPlayerState(val)
+		);
 	};
 
 	const pauseUserTrack = () => {

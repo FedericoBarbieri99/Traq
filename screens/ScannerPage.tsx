@@ -3,11 +3,9 @@ import { TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import QRScanner from "../components/QrScanner";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import { usePlayerStore } from "../stores/PlayerStore";
 import { useSpotifyApi } from "../hook/SpotifyHook";
 
 const ScannerPage = ({ navigation }: { navigation: any }) => {
-	const setId = usePlayerStore((state) => state.setTrackId);
 	const { playUserTrack } = useSpotifyApi();
 
 	return (
@@ -26,8 +24,7 @@ const ScannerPage = ({ navigation }: { navigation: any }) => {
 
 			<QRScanner
 				onScanSuccess={(trackId: string) => {
-					setId(trackId);
-					playUserTrack();
+					playUserTrack(trackId);
 					navigation.navigate("PlayPage");
 				}}
 			/>
