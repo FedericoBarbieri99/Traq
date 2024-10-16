@@ -1,7 +1,7 @@
 {
 	"expo": {
-		"name": "Tunez",
-		"slug": "Tunez",
+		"name": "Traq",
+		"slug": "Traq",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -13,14 +13,14 @@
 		},
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.federicobarbieri.tunez"
+			"bundleIdentifier": "com.federicobarbieri.traq"
 		},
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.federicobarbieri.tunez"
+			"package": "com.federicobarbieri.traq"
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"

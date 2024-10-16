@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'Tunez'
+rootProject.name = 'Traq'
 
 dependencyResolutionManagement {
   versionCatalogs {

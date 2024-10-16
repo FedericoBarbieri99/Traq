@@ -7,7 +7,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>Tunez</string>
+    <string>Traq</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -27,8 +27,8 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.federicobarbieri.tunez</string>
-          <string>tunez</string>
+          <string>com.federicobarbieri.traq</string>
+          <string>traq</string>
         </array>
       </dict>
     </array>

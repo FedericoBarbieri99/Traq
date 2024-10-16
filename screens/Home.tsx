@@ -11,7 +11,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 	const handleRedirect = (event: { url: string }) => {
 		const { url } = event;
 
-		// Estrai il token dall'URL di redirect (es. da tunez://callback#access_token=YOUR_TOKEN)
+		// Estrai il token dall'URL di redirect (es. da traq://callback#access_token=YOUR_TOKEN)
 		const tokenMatch = url.match(/access_token=([^&]*)/);
 		const token = tokenMatch ? tokenMatch[1] : null;
 
@@ -37,7 +37,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 	return (
 		<View className="bg-main flex-1 justify-center items-center p-6">
 			<Text className="text-text text-3xl font-extrabold mb-8 tracking-wider shadow-lg">
-				Benvenuto su Tunez
+				Benvenuto su Traq
 			</Text>
 
 			<TouchableOpacity

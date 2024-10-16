@@ -109,9 +109,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.federicobarbieri.tunez'
+    namespace 'com.federicobarbieri.traq'
     defaultConfig {
-        applicationId 'com.federicobarbieri.tunez'
+        applicationId 'com.federicobarbieri.traq'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
